@@ -14,7 +14,7 @@ export class CartService {
 
   user$: BehaviorSubject<any>;
 
-  constructor(private http: HttpClient, private productsService: ProductsService) {
+  constructor(private http: HttpClient, private productsService: ProductsService) {    
     const cachedCart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : null;
 
     const startingVal = cachedCart || [];
@@ -24,6 +24,10 @@ export class CartService {
     if (!cachedCart) {
       this.getInitialCart();
     }
+
+    const cachedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+
+    this.user$ = new BehaviorSubject(cachedUser);
   }
 
   getInitialCart(): void {
@@ -31,6 +35,11 @@ export class CartService {
 
     this.http.get(this.initialCartUrl)
       .pipe(
+
+        tap((res: any) => {
+          this.user$.next(res.user);
+          localStorage.setItem('user', JSON.stringify(res.user));
+        }),
 
         map((res: any) => res.cart.products),
 

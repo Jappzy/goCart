@@ -10,6 +10,7 @@ import { tap } from 'rxjs/operators';
 })
 export class CartComponent implements OnInit {
   cart$: Observable<any>;
+  user$: Observable<any>;
 
   quantityOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -20,6 +21,8 @@ export class CartComponent implements OnInit {
   constructor(private cartService: CartService) { }
 
   ngOnInit() {
+    this.user$ = this.cartService.user$.asObservable();
+
     this.cart$ = this.cartService.cart$.asObservable()
       .pipe(
         tap(products => {

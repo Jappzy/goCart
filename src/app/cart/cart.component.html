@@ -1,5 +1,6 @@
 
-<button mat-raised-button (click)="resetCart()">Reset Cart</button>
+<p *ngIf="user$ | async as user" style="text-align: center">Hey {{ user.first_name }} {{ user.last_name }}! Here's your cart!</p>
+
 
 <div class="cart-container">
 
@@ -9,11 +10,10 @@
         <img class="cart-image" [src]="product.images[0].small" alt="Product Image">
         
         <div style="width: 100px">
-            <h5>{{ product.name }}</h5>
+            <h5 style="font-weight: 400">{{ product.name }}</h5>
             <!-- <span [innerHTML]="product.description"></span> -->
         </div>
 
-        <!-- give this a set width so flex-space-between always has these fields lined up -->
         <div class="far-right-side">
 
             <div>
@@ -21,17 +21,19 @@
                 <p *ngIf="product.credit_coupon_price < product.price" class="discounted-price">{{ product.credit_coupon_price | currency }}!</p>
             </div>
     
-            <mat-form-field style="width: 50px">
-                <mat-label>Quantity</mat-label>
-                <mat-select [(ngModel)]="product.quantity" (ngModelChange)="updateProduct(product)">
-                    <mat-option *ngFor="let qty of quantityOptions" [value]="qty">
-                        {{ qty }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-    
-            <div>
-                <span>{{ product.quantity * product.credit_coupon_price | currency }}</span>
+            <div class="quantity-price-section">
+                <mat-form-field style="width: 50px">
+                    <mat-label>Quantity</mat-label>
+                    <mat-select [(ngModel)]="product.quantity" (ngModelChange)="updateProduct(product)">
+                        <mat-option *ngFor="let qty of quantityOptions" [value]="qty">
+                            {{ qty }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+        
+                <div>
+                    <span>{{ product.quantity * product.credit_coupon_price | currency }}</span>
+                </div>
             </div>
     
             <div>
@@ -57,6 +59,13 @@
         <h3>Total: {{ total | currency }}</h3>
 
     </div>
+
+    <button
+        mat-raised-button
+        (click)="resetCart()"
+        style="display: block; margin: 1em auto;">
+        Reset Cart
+    </button>
 
 
 </div>
