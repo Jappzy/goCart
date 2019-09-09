@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { ProductsService } from './products.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class CartService {
 
   user$: BehaviorSubject<any>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private productsService: ProductsService) {
     // const cachedCart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : null;
 
 
@@ -26,9 +27,29 @@ export class CartService {
   }
 
   getInitialCart(): Observable<any> {
+    let cartProducts = [];
+
     return this.http.get(this.initialCartUrl)
       .pipe(
-        map((res: any) => res.cart.products)
+
+        map((res: any) => res.cart.products),
+
+        tap(products => cartProducts = products),
+
+        switchMap(products => {
+
+          const ids = products.map(product => product.id);
+
+          return this.productsService.getProductInfoByIds(ids);
+        }),
+
+        map(productDetails => {
+          return cartProducts.map(product => {
+            const details = productDetails.find(data => data.product_id === product.id);
+            return { ...details, ...product };
+          });
+        })
+
       );
   }
 }

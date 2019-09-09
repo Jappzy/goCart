@@ -1,0 +1,26 @@
+.cart-container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 1em auto;
+}
+
+.cart-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-image {
+    max-height: 100px;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: red;
+}
+
+.discounted-price {
+    background-color: rgb(25, 218, 25);
+    padding: 0.5em;
+    border-radius: 40%;
+}

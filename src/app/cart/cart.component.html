@@ -3,7 +3,50 @@
 
 
     <div *ngFor="let product of cart" class="cart-row">
-        {{ product | json }}
+
+        <img class="cart-image" [src]="product.images[0].small" alt="Product Image">
+        
+        <div style="width: 300px">
+            <h5>{{ product.name }}</h5>
+            <!-- <span [innerHTML]="product.description"></span> -->
+        </div>
+
+        <div>
+            <p [ngClass]="product.credit_coupon_price < product.price ? 'old-price' : ''">{{ product.price | currency }}</p>
+            <p *ngIf="product.credit_coupon_price < product.price" class="discounted-price">{{ product.credit_coupon_price | currency }}!</p>
+        </div>
+
+        <mat-form-field style="width: 100px">
+            <mat-label>Quantity</mat-label>
+            <mat-select [(ngModel)]="product.quantity">
+                <mat-option *ngFor="let qty of quantityOptions" [value]="qty">
+                    {{ qty }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div>
+            <span>{{ product.quantity * product.credit_coupon_price | currency }}</span>
+        </div>
+
+        <div>
+            <button mat-icon-button color="warn">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div style="width: 200px; margin-left: auto;">
+
+        <p>Subtotal: </p>
+
+        <p>Discounts: </p>
+
+        <h3>Total: </h3>
+
     </div>
 
 
