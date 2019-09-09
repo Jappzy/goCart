@@ -33,7 +33,7 @@
 
                 <mat-form-field style="width: 50px">
                     <mat-label>Quantity</mat-label>
-                    <mat-select [(ngModel)]="product.quantity" (ngModelChange)="updateProduct(product)">
+                    <mat-select [(ngModel)]="product.quantity">
                         <mat-option *ngFor="let qty of quantityOptions" [value]="qty">
                             {{ qty }}
                         </mat-option>
