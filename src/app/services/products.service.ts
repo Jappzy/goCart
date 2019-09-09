@@ -19,8 +19,7 @@ export class ProductsService {
 
     return this.http.get(url)
       .pipe(
-        map((res: any) => res.products),
-        tap(res => console.log('tapped', res))
+        map((res: any) => res.products)
       );
   }
 }

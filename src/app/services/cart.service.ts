@@ -27,7 +27,6 @@ export class CartService {
   }
 
   getInitialCart(): void {
-    console.log('getInitialCart');
     let cartProducts = [];
 
     this.http.get(this.initialCartUrl)

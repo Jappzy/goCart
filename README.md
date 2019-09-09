@@ -1,27 +1,14 @@
 # GoCart
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.0.
+I acknowledge the tech stack at goPuff does not include Angular, however it will always have a warm place in my heart and enable me to create web apps like this in speedy fashion. This project is built with Angular and the Material Design UI library and hosted on Firebase. The only 'helper' library that I used is RxJs. I love observables and prefer ES6+ high order functions over lodash/underscore/jquery/etc...
 
-## Development server
+## Getting the Cart & Caching
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+When the site is loaded I check local storage for a saved cart.
 
-## Code scaffolding
+If it exists it is stored in a BehaviorSubject and subscribed to throughout the app.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+If no cart exists in local storage I hit the initial cart endpoint to get the sample cart.
+Then I need to get the product details for the items. This is accomplished by getting just the id's for the products and then hitting the product details endpoint with the ids in a query string.
+Next I join the product details with the initial product objects, making sure to concatenate the original product after the details so info like the quantity don't get reset.
+These are stored in a simple JSON string in local storage for easy retrieval upon re-visiting the page.

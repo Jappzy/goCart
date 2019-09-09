@@ -33,12 +33,10 @@ export class CartComponent implements OnInit {
   }
 
   updateProduct(product: any) {
-    console.log('update', product);
     this.cartService.updateCartProduct(product);
   }
 
   removeProduct(productId: string) {
-    console.log('remove', productId);
     this.cartService.removeCartProduct(productId);
   }
 
