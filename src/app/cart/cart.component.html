@@ -1,39 +1,48 @@
 
+<button mat-raised-button (click)="resetCart()">Reset Cart</button>
+
 <div class="cart-container">
 
 
-    <div *ngFor="let product of cart" class="cart-row">
+    <div *ngFor="let product of cart$ | async" class="cart-row">
 
         <img class="cart-image" [src]="product.images[0].small" alt="Product Image">
         
-        <div style="width: 300px">
+        <div style="width: 100px">
             <h5>{{ product.name }}</h5>
             <!-- <span [innerHTML]="product.description"></span> -->
         </div>
 
-        <div>
-            <p [ngClass]="product.credit_coupon_price < product.price ? 'old-price' : ''">{{ product.price | currency }}</p>
-            <p *ngIf="product.credit_coupon_price < product.price" class="discounted-price">{{ product.credit_coupon_price | currency }}!</p>
+        <!-- give this a set width so flex-space-between always has these fields lined up -->
+        <div class="far-right-side">
+
+            <div>
+                <p [ngClass]="product.credit_coupon_price < product.price ? 'old-price' : ''">{{ product.price | currency }}</p>
+                <p *ngIf="product.credit_coupon_price < product.price" class="discounted-price">{{ product.credit_coupon_price | currency }}!</p>
+            </div>
+    
+            <mat-form-field style="width: 50px">
+                <mat-label>Quantity</mat-label>
+                <mat-select [(ngModel)]="product.quantity" (ngModelChange)="updateProduct(product)">
+                    <mat-option *ngFor="let qty of quantityOptions" [value]="qty">
+                        {{ qty }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+    
+            <div>
+                <span>{{ product.quantity * product.credit_coupon_price | currency }}</span>
+            </div>
+    
+            <div>
+                <button mat-icon-button color="warn" (click)="removeProduct(product.id)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
         </div>
 
-        <mat-form-field style="width: 100px">
-            <mat-label>Quantity</mat-label>
-            <mat-select [(ngModel)]="product.quantity">
-                <mat-option *ngFor="let qty of quantityOptions" [value]="qty">
-                    {{ qty }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
 
-        <div>
-            <span>{{ product.quantity * product.credit_coupon_price | currency }}</span>
-        </div>
-
-        <div>
-            <button mat-icon-button color="warn">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
 
     </div>
 
@@ -41,11 +50,11 @@
 
     <div style="width: 200px; margin-left: auto;">
 
-        <p>Subtotal: </p>
+        <p>Subtotal: {{ subtotal | currency }}</p>
 
-        <p>Discounts: </p>
+        <p>Discounts: {{ total - subtotal | currency }}</p>
 
-        <h3>Total: </h3>
+        <h3>Total: {{ total | currency }}</h3>
 
     </div>
 

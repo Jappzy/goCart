@@ -15,21 +15,22 @@ export class CartService {
   user$: BehaviorSubject<any>;
 
   constructor(private http: HttpClient, private productsService: ProductsService) {
-    // const cachedCart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : null;
+    const cachedCart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : null;
 
+    const startingVal = cachedCart || [];
 
-    // if (cachedCart) {
-    //   this.cart$ = new BehaviorSubject(cachedCart);
-    // } else {
-    //   this.getInitialCart()
-    //     .subscribe(cart => this.cart$ = new BehaviorSubject(cart));
-    // }
+    this.cart$ = new BehaviorSubject(startingVal);
+
+    if (!cachedCart) {
+      this.getInitialCart();
+    }
   }
 
-  getInitialCart(): Observable<any> {
+  getInitialCart(): void {
+    console.log('getInitialCart');
     let cartProducts = [];
 
-    return this.http.get(this.initialCartUrl)
+    this.http.get(this.initialCartUrl)
       .pipe(
 
         map((res: any) => res.cart.products),
@@ -37,7 +38,6 @@ export class CartService {
         tap(products => cartProducts = products),
 
         switchMap(products => {
-
           const ids = products.map(product => product.id);
 
           return this.productsService.getProductInfoByIds(ids);
@@ -50,6 +50,35 @@ export class CartService {
           });
         })
 
-      );
+      )
+      .subscribe(cart => {
+        this.cart$.next(cart);
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+      });
+  }
+
+  updateCartProduct(newProduct: any) {
+    const products = this.cart$.getValue();
+
+    const index = products.findIndex(p => p.id === newProduct.id);
+
+    products[index] = newProduct;
+
+    this.cart$.next(products);
+
+    localStorage.setItem('cart', JSON.stringify(products));
+  }
+
+  removeCartProduct(productId: string) {
+    const products = this.cart$.getValue();
+
+    const index = products.findIndex(p => p.id === productId);
+
+    products.splice(index, 1);
+
+    this.cart$.next(products);
+
+    localStorage.setItem('cart', JSON.stringify(products));
   }
 }
