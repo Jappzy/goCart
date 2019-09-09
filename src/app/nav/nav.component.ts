@@ -12,4 +12,8 @@ export class NavComponent implements OnInit {
   ngOnInit() {
   }
 
+  navigateToRepo() {
+    window.open('https://github.com/Jappzy/goCart', '_blank');
+  }
+
 }

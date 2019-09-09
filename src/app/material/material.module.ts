@@ -4,10 +4,10 @@ import {
   MatButtonModule,
   MatFormFieldModule,
   MatIconModule,
+  MatInputModule,
   MatSelectModule,
   MatToolbarModule
 } from '@angular/material';
-
 
 @NgModule({
   declarations: [],
@@ -16,6 +16,7 @@ import {
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
+    MatInputModule,
     MatSelectModule,
     MatToolbarModule
   ],
@@ -23,6 +24,7 @@ import {
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
+    MatInputModule,
     MatSelectModule,
     MatToolbarModule
   ]

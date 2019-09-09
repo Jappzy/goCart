@@ -31,13 +31,13 @@
                     </mat-select>
                 </mat-form-field>
         
-                <div>
-                    <span>{{ product.quantity * product.credit_coupon_price | currency }}</span>
-                </div>
+                <span>
+                    {{ product.quantity * (product.credit_coupon_price || product.price) | currency }}
+                </span>
             </div>
     
             <div>
-                <button mat-icon-button color="warn" (click)="removeProduct(product.id)">
+                <button mat-icon-button color="warn" (click)="removeProduct(product.product_id)">
                     <mat-icon>close</mat-icon>
                 </button>
             </div>

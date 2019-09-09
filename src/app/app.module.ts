@@ -10,12 +10,14 @@ import { MaterialModule } from './material/material.module';
 import { CartComponent } from './cart/cart.component';
 import { NavComponent } from './nav/nav.component';
 import { FormsModule } from '@angular/forms';
+import { ProductsComponent } from './products/products.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CartComponent,
-    NavComponent
+    NavComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,

@@ -29,7 +29,10 @@ export class CartComponent implements OnInit {
 
           this.subtotal = products.reduce((acc, val) => acc + (val.price * val.quantity), 0);
 
-          this.total = products.reduce((acc, val) => acc + (val.credit_coupon_price * val.quantity), 0);
+          this.total = products.reduce((acc, val) => {
+            const price = val.credit_coupon_price || val.price;
+            return acc + (price * val.quantity);
+          }, 0);
 
         })
       );

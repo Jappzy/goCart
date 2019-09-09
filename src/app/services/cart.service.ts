@@ -69,7 +69,7 @@ export class CartService {
   updateCartProduct(newProduct: any) {
     const products = this.cart$.getValue();
 
-    const index = products.findIndex(p => p.id === newProduct.id);
+    const index = products.findIndex(p => p.product_id === newProduct.product_id);
 
     products[index] = newProduct;
 
@@ -81,12 +81,27 @@ export class CartService {
   removeCartProduct(productId: string) {
     const products = this.cart$.getValue();
 
-    const index = products.findIndex(p => p.id === productId);
+    const index = products.findIndex(p => p.product_id === productId);
 
     products.splice(index, 1);
 
     this.cart$.next(products);
 
     localStorage.setItem('cart', JSON.stringify(products));
+  }
+
+  addProductToCart(product: any) {
+    const products = this.cart$.getValue();
+
+    const exists = products.find(p => p.product_id === product.product_id);
+
+    if (!exists) {
+      products.push(product);
+      console.log('new products', products);
+      this.cart$.next(products);
+    } else {
+      window.alert('That item is already in your cart, silly!');
+    }
+
   }
 }

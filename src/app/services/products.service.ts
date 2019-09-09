@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,21 @@ export class ProductsService {
 
   constructor(private http: HttpClient) { }
 
-  getProductInfoByIds(ids: string[]) {
+  getProductInfoByIds(ids: string[]): Observable<any> {
     const qs = '&product_ids=' + ids.join(',');
 
     const url = this.productsUrl + qs;
 
-    // const url = 'https://prodcat.gopuff.com/api/products?location_id=-1&product_ids=989,1068';
+    return this.http.get(url)
+      .pipe(
+        map((res: any) => res.products)
+      );
+  }
+
+  searchProducts(text: string): Observable<any> {
+    const qs = `&text=${text}`;
+
+    const url = this.productsUrl + qs;
 
     return this.http.get(url)
       .pipe(
